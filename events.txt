@@ -1,0 +1,240 @@
+142:  events: [],
+433:        showNotification('Level chart is too large (exceeds 1MB). Please try to reduce the number of notes or events.', 'error');
+1094:    // Ensure all notes, events, and layers have unique IDs
+1107:    const eventsWithIds = (stage.chart?.events || []).map(e => {
+1118:    eventsWithIds.forEach(e => {
+1157:        events: eventsWithIds
+1722:                          <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-white rounded-full flex items-center justify-center shadow-lg animate-pulse pointer-events-none">
+1863:                          <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-white rounded-full flex items-center justify-center shadow-lg animate-pulse pointer-events-none">
+1984:                  <div className="absolute inset-0 z-5 opacity-[0.05] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '48px 48px' }} />
+1985:                  <div className="absolute inset-0 z-5 opacity-[0.02] pointer-events-none" style={{ backgroundImage: 'linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)', backgroundSize: '192px 192px' }} />
+4078:        <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, #333 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+5330:            <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, #333 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+5482:                      <div className="absolute top-4 left-1/2 -translate-x-1/2 flex bg-zinc-900/90 backdrop-blur p-1 rounded-xl border border-zinc-800 z-[200] pointer-events-auto">
+5530:                  className="absolute w-12 h-12 border-2 border-pink-500 rounded-full flex items-center justify-center cursor-grab active:cursor-grabbing z-[200] pointer-events-auto group"
+5538:                  className="absolute w-12 h-12 border-2 border-cyan-500 rounded-full flex items-center justify-center cursor-grab active:cursor-grabbing z-[200] pointer-events-auto group"
+5588:                      <span className="text-[10px] font-black uppercase tracking-widest text-amber-500 pointer-events-none">
+5718:          const eventsWithIds = (obj.events || []).map(e => {
+5731:            events: eventsWithIds
+5815:    const events = stage.chart?.events || [];
+5816:    const changes = events
+5841:  }, [stage.chart?.events, stage.chart?.bpm]);
+5906:    const selectedEvents = minLane <= -1 ? (stage.chart?.events || []).filter(e => e.step >= minStep && e.step <= maxStep) : [];
+5909:    const eventsToCopy = selectedEvents.map(e => ({ ...e, id: crypto.randomUUID(), step: e.step - minStep }));
+5915:      events: eventsToCopy,
+5982:    const newEvents = obj.events.map(e => ({ ...e, id: crypto.randomUUID(), step: e.step + targetStep }));
+5986:      events: (stage.chart?.events || []).concat(newEvents)
+6030:    updateChart({ events: (stage.chart?.events || []).concat([newEvent]) });
+6041:      case 'loop': return { target: 'player', count: 1, interval: 4, events: [] };
+6169:        const startPoint = (stage.chart?.events || []).find(e => e.type === 'start_point');
+6247:        events: (prev.chart?.events || []).filter(e => !(minLane <= -1 && e.step >= minStep && e.step <= maxStep))
+6340:    // Find move and rotate events in the selected area
+6341:    const selectedEvents = (stage.chart?.events || []).filter(e => 
+6365:        events: selectedEvents.map(e => e.id),
+6382:      events: (stage.chart?.events || []).concat([loopEvent, stopLoopEvent]) 
+6424:    let eventsToCopy: ChartEvent[] = [];
+6428:      eventsToCopy = (stage.chart?.events || []).filter(e => selectedEventIds.has(e.id));
+6436:      eventsToCopy = (stage.chart?.events || []).filter(e => e.step >= minStep && e.step <= maxStep && (minLane === -1 || (minLane === 0 && maxLane === gridSize - 1)));
+6439:    if (notesToCopy.length === 0 && eventsToCopy.length === 0) return;
+6442:    const minStep = Math.min(...[...notesToCopy.map(n => n.step), ...eventsToCopy.map(e => e.step)]);
+6446:    const normalizedEvents = eventsToCopy.map(e => ({ ...e, step: e.step - minStep }));
+6454:      events: normalizedEvents
+6471:    let newEvents = stage.chart?.events || [];
+6490:    updateChart({ notes: newNotes, events: newEvents });
+6539:    let events = copiedEvents;
+6543:      events = pastedData.events;
+6551:            events = data.events;
+6559:    if (notes.length === 0 && events.length === 0) return;
+6597:    if (filteredNewNotes.length === 0 && events.length === 0) {
+6602:    const newEvents = events.map(e => ({ ...e, id: crypto.randomUUID(), step: e.step + targetStep }));
+6606:      events: (stage.chart?.events || []).concat(newEvents)
+6648:        events: prev.chart.events.map(e => {
+6759:        const selectedEvents = stage.chart.events.filter(e => e.step >= minStep && e.step <= maxStep && (minLane === -1 || (minLane === 0 && maxLane === gridSize - 1)));
+6789:              events: prev.chart.events.map(e => {
+6905:  const eventsByStep = useMemo(() => {
+6907:    (stage.chart?.events || []).forEach(e => {
+6912:  }, [stage.chart?.events]);
+7212:          <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-emerald-500 z-50 pointer-events-none shadow-[0_0_10px_rgba(16,185,129,0.8)] -translate-y-1/2" />
+7251:                      {(eventsByStep[step] || []).map(event => {
+7292:              {!settings.spamtrackMode && (stage.chart?.events || []).map(e => {
+7304:                  className={`absolute left-0 right-0 h-0.5 z-10 pointer-events-none ${selectedEventId === event.id ? 'bg-cyan-500 shadow-[0_0_8px_rgba(6,182,212,0.8)]' : 'bg-zinc-500/50'}`} 
+7310:              <div className="absolute inset-0 pointer-events-none">
+7322:                        className={`absolute pointer-events-none ${
+7364:                const selectedEvent = (stage.chart?.events || []).find(e => e.id === selectedEventId);
+7372:                    className={`absolute rounded-sm cursor-pointer flex flex-col items-center pointer-events-none border border-black/20 ${
+7474:                  const allEvents = stage.chart?.events || [];
+7807:            const event = (stage.chart?.events || []).find(e => e.id === selectedEventId);
+7816:                      updateChart({ events: (stage.chart?.events || []).filter(e => e.id !== selectedEventId) });
+7834:                          events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, step: newStep } : ev)
+7850:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, target: e.target.value } } : ev)
+7867:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, movementType: e.target.value } } : ev)
+7882:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, relative: e.target.checked } } : ev)
+7899:                                events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, duration: parseFloat(e.target.value) || 0 } } : ev)
+7911:                                events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, easing: e.target.value } } : ev)
+7932:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, x: parseFloat(e.target.value) || 0 } } : ev)
+7945:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, y: parseFloat(e.target.value) || 0 } } : ev)
+7966:                                  events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, lanes: newLanes } } : ev)
+7995:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, target: e.target.value } } : ev)
+8012:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, color: e.target.value } } : ev)
+8028:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, opacity: parseFloat(e.target.value) || 0 } } : ev)
+8042:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, offsetX: parseFloat(e.target.value) || 0 } } : ev)
+8055:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, offsetY: parseFloat(e.target.value) || 0 } } : ev)
+8068:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, mode: e.target.value } } : ev)
+8086:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, duration: parseFloat(e.target.value) || 0 } } : ev)
+8104:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, type: e.target.value } } : ev)
+8122:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, target: e.target.value } } : ev)
+8143:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, lanes } } : ev)
+8159:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, intensity: parseFloat(e.target.value) || 0 } } : ev)
+8172:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, speed: parseFloat(e.target.value) || 0 } } : ev)
+8186:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, duration: parseInt(e.target.value) || 0 } } : ev)
+8198:                              <input type="number" value={event.value.x || 0} onChange={(e) => updateChart({ events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, x: parseFloat(e.target.value) || 0 } } : ev) })} className="bg-zinc-900 border border-zinc-800 rounded px-2 py-1 text-xs text-white" />
+8202:                              <input type="number" value={event.value.y || 0} onChange={(e) => updateChart({ events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, y: parseFloat(e.target.value) || 0 } } : ev) })} className="bg-zinc-900 border border-zinc-800 rounded px-2 py-1 text-xs text-white" />
+8209:                            <input type="number" step="0.1" value={event.value.scale || 1.2} onChange={(e) => updateChart({ events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, scale: parseFloat(e.target.value) || 1 } } : ev) })} className="bg-zinc-900 border border-zinc-800 rounded px-2 py-1 text-xs text-white w-full" />
+8225:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, target: e.target.value } } : ev)
+8245:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, characterId: e.target.value } } : ev)
+8260:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, movementType: e.target.value } } : ev)
+8279:                                events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, duration: parseInt(e.target.value) || 0 } } : ev)
+8291:                                events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, easing: e.target.value } } : ev)
+8312:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, relative: e.target.checked } } : ev)
+8330:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, x: parseFloat(e.target.value) || 0 } } : ev)
+8343:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, y: parseFloat(e.target.value) || 0 } } : ev)
+8357:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, scale: parseFloat(e.target.value) || 1 } } : ev)
+8373:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, opacity: parseFloat(e.target.value) || 0 } } : ev)
+8391:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, target: e.target.value } } : ev)
+8410:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, animationName: e.target.value } } : ev)
+8424:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, duration: parseFloat(e.target.value) || 0 } } : ev)
+8441:                          events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, bpm: parseFloat(e.target.value) || 100 } } : ev)
+8457:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, target: e.target.value } } : ev)
+8471:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, isExtra: !event.value.isExtra, characterId: '' } } : ev)
+8486:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, characterId: e.target.value } } : ev)
+8503:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, characterId: e.target.value } } : ev)
+8518:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, resetAnimation: e.target.value } } : ev)
+8535:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, target: e.target.value } } : ev)
+8552:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, interval: parseFloat(e.target.value) || 0 } } : ev)
+8561:                        {(stage.chart?.events || []).filter(e => e.id !== event.id).map(e => (
+8565:                              checked={event.value.events?.includes(e.id) || false}
+8568:                                  ? [...(event.value.events || []), e.id]
+8569:                                  : (event.value.events || []).filter((id: string) => id !== e.id);
+8571:                                  events: (stage.chart?.events || []).map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, events: newEvents } } : ev)
+8595:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, target: e.target.value } } : ev)
+8611:                            events: (stage.chart?.events || []).map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, loopEventId: e.target.value } } : ev)
+8617:                        {(stage.chart?.events || []).filter(e => e.type === 'loop').map(e => (
+8636:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, intensity: parseFloat(e.target.value) || 0 } } : ev)
+8649:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, duration: parseFloat(e.target.value) || 0 } } : ev)
+8668:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, zoom: parseFloat(e.target.value) || 1 } } : ev)
+8681:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, duration: parseFloat(e.target.value) || 0 } } : ev)
+8698:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, focus: e.target.value } } : ev)
+8714:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, type: e.target.value } } : ev)
+8731:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, duration: parseFloat(e.target.value) || 0 } } : ev)
+8746:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, x: parseFloat(e.target.value) || 0 } } : ev)
+8759:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, y: parseFloat(e.target.value) || 0 } } : ev)
+8774:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, zoom: parseFloat(e.target.value) || 1 } } : ev)
+8791:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, effectType: e.target.value } } : ev)
+8810:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, mode: e.target.value } } : ev)
+8826:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, duration: parseFloat(e.target.value) || 0 } } : ev)
+8842:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, intensity: parseFloat(e.target.value) || 0 } } : ev)
+8859:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, type: e.target.value } } : ev)
+8877:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, color: e.target.value } } : ev)
+8890:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, duration: parseFloat(e.target.value) || 0 } } : ev)
+8911:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, intensity: parseFloat(e.target.value) || 0 } } : ev)
+8925:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, fadeIn: parseFloat(e.target.value) || 0 } } : ev)
+8938:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, hold: parseFloat(e.target.value) || 0 } } : ev)
+8951:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, fadeOut: parseFloat(e.target.value) || 0 } } : ev)
+8964:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, rainbow: e.target.checked } } : ev)
+8982:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, presetId: e.target.value } } : ev)
+9000:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, duration: parseFloat(e.target.value) || 0 } } : ev)
+9014:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, opacity: parseFloat(e.target.value) || 0 } } : ev)
+9027:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, intensity: parseFloat(e.target.value) || 0 } } : ev)
+9045:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, target: e.target.value } } : ev)
+9073:                                  events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, lanes: newLanes } } : ev)
+9095:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, rotationMode: e.target.value } } : ev)
+9113:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, orbitRadius: parseFloat(e.target.value) || 0 } } : ev)
+9129:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, rotations: parseFloat(e.target.value) || 0 } } : ev)
+9142:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, duration: parseFloat(e.target.value) || 0 } } : ev)
+9154:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, isRelative: e.target.checked } } : ev)
+9166:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, easing: e.target.value } } : ev)
+9188:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, type: e.target.value } } : ev)
+9216:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, target: e.target.value } } : ev)
+9244:                                    events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, lanes: newLanes } } : ev)
+9263:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, duration: parseFloat(e.target.value) || 0 } } : ev)
+9277:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, speed: parseFloat(e.target.value) || 0 } } : ev)
+9294:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, intensity: parseFloat(e.target.value) || 0 } } : ev)
+9307:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, repeat: parseInt(e.target.value) || 0 } } : ev)
+9324:                                events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, value: { ...ev.value.value, x: parseFloat(e.target.value) || 0 } } } : ev)
+9337:                                events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, value: { ...ev.value.value, y: parseFloat(e.target.value) || 0 } } } : ev)
+9354:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, delay: parseFloat(e.target.value) || 0 } } : ev)
+9367:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, fadeOut: parseFloat(e.target.value) || 0 } } : ev)
+9381:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, easing: e.target.value } } : ev)
+9403:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, shaderType: e.target.value } } : ev)
+9421:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, mode: e.target.value } } : ev)
+9439:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, intensity: parseFloat(e.target.value) || 0 } } : ev)
+9452:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, duration: parseFloat(e.target.value) || 0 } } : ev)
+9472:                                  events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, offsetX: parseFloat(e.target.value) || 0 } } : ev)
+9486:                                  events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, offsetY: parseFloat(e.target.value) || 0 } } : ev)
+9503:                                events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, opacity: parseFloat(e.target.value) || 0 } } : ev)
+9521:                                events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, speed: parseFloat(e.target.value) || 0 } } : ev)
+9535:                                events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, noise: parseFloat(e.target.value) || 0 } } : ev)
+9554:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, target: e.target.value } } : ev)
+9579:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, opacity: parseFloat(e.target.value) || 0 } } : ev)
+9591:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, mode: e.target.value } } : ev)
+9608:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, duration: parseFloat(e.target.value) || 0 } } : ev)
+9630:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, text: e.target.value } } : ev)
+9644:                                events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, font } } : ev)
+9666:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, mode: e.target.value } } : ev)
+9682:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, duration: parseFloat(e.target.value) || 0 } } : ev)
+9700:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, targetOpacity: parseFloat(e.target.value) || 0 } } : ev)
+9713:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, color: e.target.value } } : ev)
+9729:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, x: parseFloat(e.target.value) || 0 } } : ev)
+9743:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, y: parseFloat(e.target.value) || 0 } } : ev)
+9775:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, speed: parseFloat(e.target.value) || 1 } } : ev)
+9786:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, speed: parseFloat(e.target.value) || 1 } } : ev)
+9886:    let currentEvents = (stage.chart?.events || []).slice();
+9896:    updateChart({ events: currentEvents.concat([newEvent]) });
+9905:      case 'loop': return { target: 'player', count: 1, interval: 4, events: [] };
+9929:    updateChart({ events: (stage.chart?.events || []).filter(ev => ev.type !== 'start_point') });
+9932:  const hasStartPoints = (stage.chart?.events || []).some(ev => ev.type === 'start_point');
+10000:          {(stage.chart?.events?.length || 0) === 0 ? (
+10003:              <p>No events added to this chart yet.</p>
+10006:            (stage.chart?.events || []).sort((a, b) => a.step - b.step).map((event) => (
+10015:                        const newEvents = (stage.chart?.events || []).map(ev => ev.id === event.id ? { ...ev, step: parseInt(e.target.value) || 0 } : ev);
+10016:                        updateChart({ events: newEvents });
+10031:                        const newEvents = (stage.chart?.events || []).map(ev => ev.id === event.id ? { ...ev, value: e.target.value } : ev);
+10032:                        updateChart({ events: newEvents });
+10048:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, focus: e.target.value } } : ev)
+10063:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, type: e.target.value } } : ev)
+10081:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, x: parseFloat(e.target.value) || 0 } } : ev)
+10094:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, y: parseFloat(e.target.value) || 0 } } : ev)
+10108:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, zoom: parseFloat(e.target.value) || 1.2 } } : ev)
+10123:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, duration: parseInt(e.target.value) || 0 } } : ev)
+10142:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, effectType: e.target.value } } : ev)
+10160:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, mode: e.target.value } } : ev)
+10178:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, duration: parseInt(e.target.value) || 0 } } : ev)
+10192:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, intensity: parseFloat(e.target.value) || 1 } } : ev)
+10211:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, type: e.target.value } } : ev)
+10229:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, target: e.target.value } } : ev)
+10249:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, intensity: parseFloat(e.target.value) || 0 } } : ev)
+10262:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, speed: parseFloat(e.target.value) || 0 } } : ev)
+10275:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, duration: parseInt(e.target.value) || 0 } } : ev)
+10297:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, speed: parseFloat(e.target.value) || 1 } } : ev)
+10308:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, speed: parseFloat(e.target.value) || 1 } } : ev)
+10329:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, swapTo: mode } } : ev)
+10350:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, target: e.target.value } } : ev)
+10369:                                events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, characterId: e.target.value } } : ev)
+10383:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, movementType: e.target.value } } : ev)
+10401:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, x: parseFloat(e.target.value) || 0 } } : ev)
+10414:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, y: parseFloat(e.target.value) || 0 } } : ev)
+10428:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, scale: parseFloat(e.target.value) || 1 } } : ev)
+10444:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, opacity: parseFloat(e.target.value) || 0 } } : ev)
+10460:                                events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, duration: parseInt(e.target.value) || 0 } } : ev)
+10472:                                events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, easing: e.target.value } } : ev)
+10492:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, relative: e.target.checked } } : ev)
+10514:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, target: e.target.value } } : ev)
+10534:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, animationName: e.target.value } } : ev)
+10550:                            events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, duration: parseFloat(e.target.value) || 0 } } : ev)
+10568:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, presetId: e.target.value } } : ev)
+10586:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, duration: parseInt(e.target.value) || 0 } } : ev)
+10601:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, opacity: parseFloat(e.target.value) || 0 } } : ev)
+10614:                              events: stage.chart.events.map(ev => ev.id === event.id ? { ...ev, value: { ...ev.value, intensity: parseFloat(e.target.value) || 0 } } : ev)
+10625:                  onClick={() => updateChart({ events: (stage.chart?.events || []).filter(ev => ev.id !== event.id) })}
+10640:            updateChart({ events: newEvents });
+10685:              <span className="text-white font-black">{stage.chart?.events?.length || 0}</span>

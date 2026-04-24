@@ -1,0 +1,18 @@
+{
+  "appId": "com.rhythmgame.offline",
+  "productName": "Rhythm Game Offline",
+  "directories": {
+    "output": "dist_electron"
+  },
+  "files": [
+    "dist/**/*",
+    "electron/**/*",
+    "public/**/*"
+  ],
+  "win": {
+    "target": "dir"
+  },
+  "electronDownload": {
+    "mirror": "https://npmmirror.com/mirrors/electron/"
+  }
+}

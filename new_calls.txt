@@ -1,0 +1,89 @@
+80:      (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+409:      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+440:    return new Promise((resolve) => {
+441:      const img = new Image();
+555:        createdAt: new Date().toISOString()
+577:          await new Promise(resolve => setTimeout(resolve, 500));
+687:  const activeParsingTasks = useRef<Set<string>>(new Set());
+712:        setLastAutoSave(new Date());
+727:        setLastAutoSave(new Date());
+857:      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+1185:    const seenNoteIds = new Set<string>();
+1195:    const seenEventIds = new Set<string>();
+1196:    const eventIdMap = new Map<string, string>();
+1214:    const seenLayerIds = new Set<string>();
+1351:          showNotification('Stage pasted as new track!');
+1386:      const trackIds = new Set(week.tracks || []);
+1423:        const trackIdMap = new Map<string, string>();
+1469:          showNotification('Week pasted as new week!');
+1509:        const blob = new Blob([jsonStr], { type: 'application/json' });
+1534:        const trackIds = new Set(week.tracks || []);
+1547:        const blob = new Blob([jsonStr], { type: 'application/json' });
+1570:    const reader = new FileReader();
+1590:          const trackIdMap = new Map<string, string>();
+1599:          // Update sequence to point to new track IDs
+2000:                            const trackIds = new Set(week.tracks || []);
+2400:                                const reader = new FileReader();
+2725:      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+2954:                        const reader = new FileReader();
+3515:        if (!decompressed) throw new Error('Invalid data');
+3681:                        const reader = new FileReader();
+3839:                              const reader = new FileReader();
+3894:                                const reader = new FileReader();
+3944:                                const reader = new FileReader();
+4112:                          const reader = new FileReader();
+4141:                          const reader = new FileReader();
+4233:                      const reader = new FileReader();
+4365:    // Update zIndices based on new order
+4759:                          const reader = new FileReader();
+5163:                        const reader = new FileReader();
+5759:          This stage is missing chart data. Please try re-loading or creating a new stage.
+5795:  const [selectedNoteIds, setSelectedNoteIds] = useState<Set<string>>(new Set());
+5796:  const [selectedEventIds, setSelectedEventIds] = useState<Set<string>>(new Set());
+6066:      setSelectedNoteIds(new Set(newNotes.map(n => n.id)));
+6067:      setSelectedEventIds(new Set());
+6098:    const newNoteIds = new Set(newNotes.map(n => n.id));
+6099:    const newEventIds = new Set(newEvents.map(e => e.id));
+6424:    setSelectedNoteIds(new Set(newNotes.map(n => n.id)));
+6425:    setSelectedEventIds(new Set());
+6443:      targetNoteIds = new Set(notesInArea.map(n => n.id));
+6512:    setSelectedNoteIds(new Set());
+6513:    setSelectedEventIds(new Set([loopEvent.id, stopLoopEvent.id]));
+6529:    const seen = new Set<string>();
+6618:    setSelectedNoteIds(new Set());
+6619:    setSelectedEventIds(new Set());
+6638:      targetNoteIds = new Set(notesInArea.map(n => n.id));
+6709:    const existingKeys = new Set(existingNotes.map(n => `${n.step}_${n.lane}`));
+6741:      const newNoteIds = new Set(filteredNewNotes.map(n => n.id));
+6742:      const newEventIds = new Set(newEvents.map(e => e.id));
+6832:          setSelectedNoteIds(new Set());
+6833:          setSelectedEventIds(new Set());
+6888:        setSelectedNoteIds(new Set(selectedNotes.map(n => n.id)));
+6889:        setSelectedEventIds(new Set(selectedEvents.map(e => e.id)));
+7320:                            const reader = new FileReader();
+7697:                  setSelectedNoteIds(new Set());
+7698:                  setSelectedEventIds(new Set());
+7710:                  setSelectedNoteIds(new Set(allNotes.map(n => n.id)));
+7711:                  setSelectedEventIds(new Set());
+7722:                  setSelectedNoteIds(new Set());
+7723:                  setSelectedEventIds(new Set(allEvents.map(e => e.id)));
+7733:                  setSelectedNoteIds(new Set(opponentNotes.map(n => n.id)));
+7734:                  setSelectedEventIds(new Set());
+7744:                  setSelectedNoteIds(new Set(playerNotes.map(n => n.id)));
+7745:                  setSelectedEventIds(new Set());
+7762:                    setSelectedNoteIds(new Set());
+7763:                    setSelectedEventIds(new Set());
+10145:  const [selectedEventIds, setSelectedEventIds] = useState<Set<string>>(new Set());
+10377:    setSelectedEventIds(new Set());
+10481:                      const reader = new FileReader();
+11311:                        const newSelected = new Set(selectedEventIds);
+11323:                        setSelectedEventIds(new Set());
+11384:                      const newSelected = new Set(selectedEventIds);
+11436:                              const newSelected = new Set(selectedEventIds);
+11526:                            setSelectedEventIds(new Set());
+11533:                        <button onClick={() => setSelectedEventIds(new Set())} className="p-2 bg-white border-2 border-black rounded-lg text-black hover:bg-candy-lime transition-all shadow-[2px_2px_0_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none">
+12687:                              const row = prompt('Enter new row (0-3):');
+12698:                              const type = prompt('Enter new type (e.g. move, bpm_change):');
+12772:                            setSelectedEventIds(new Set());
+12831:                          setSelectedEventIds(new Set());
+12839:                        onClick={() => setSelectedEventIds(new Set())}

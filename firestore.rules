@@ -1,0 +1,197 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global Safety Net
+    match /{document=**} { 
+      allow read, write: if false; 
+    }
+
+    // ===============================================================
+    // Primitives & Helpers
+    // ===============================================================
+
+    function isValidId(id) { 
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); 
+    }
+    
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+    function isSignedIn() { return request.auth != null; }
+    
+    function isAdmin() { 
+      return isSignedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid)); 
+    }
+
+    function isOwner(uidField) {
+      return isSignedIn() && uidField == request.auth.uid;
+    }
+
+    function isCreate() {
+      return request.method == 'create';
+    }
+
+    // ===============================================================
+    // Validators
+    // ===============================================================
+
+    function isValidUserProfile(data) {
+      return data.keys().hasAll(['uid', 'displayName', 'creatorId', 'createdAt']) &&
+             data.keys().size() <= 6 &&
+             data.uid == request.auth.uid &&
+             data.displayName is string && data.displayName.size() > 0 && data.displayName.size() <= 50 &&
+             (!('photoURL' in data) || (data.photoURL is string && data.photoURL.size() <= 2000)) &&
+             data.creatorId is number && data.creatorId > 0 &&
+             data.createdAt is string && data.createdAt.size() <= 50;
+    }
+
+    function isValidWeek(data) {
+      return data.keys().hasAll(['id', 'name', 'creatorUid', 'creatorName', 'creatorId', 'likesCount', 'commentsCount', 'createdAt']) &&
+             data.id is string && data.id.size() > 0 && data.id.size() <= 128 &&
+             data.name is string && data.name.size() > 0 && data.name.size() <= 200 &&
+             data.creatorUid == request.auth.uid &&
+             data.creatorName is string && data.creatorName.size() > 0 && data.creatorName.size() <= 100 &&
+             data.creatorId is number && data.creatorId > 0 &&
+             (!('description' in data) || (data.description is string && data.description.size() <= 2000)) &&
+             (!('thumbnail' in data) || (data.thumbnail is string && data.thumbnail.size() <= 1048576)) &&
+             (!('songs' in data) || (data.songs is list && data.songs.size() <= 50)) &&
+             (!('difficulty' in data) || (data.difficulty is number && data.difficulty >= 0 && data.difficulty <= 10)) &&
+             data.likesCount is number && data.likesCount >= 0 &&
+             data.commentsCount is number && data.commentsCount >= 0 &&
+             (!('data' in data) || (data.data is string && data.data.size() <= 1048576)) &&
+             (!('isCompressed' in data) || data.isCompressed is bool) &&
+             (!('isChunked' in data) || data.isChunked is bool) &&
+             (!('chunkCount' in data) || data.chunkCount is number) &&
+             (!('hasMusic' in data) || data.hasMusic is bool) &&
+             (!('hasSprites' in data) || data.hasSprites is bool) &&
+             (!('hasBackground' in data) || data.hasBackground is bool) &&
+             (!('musicChunkCount' in data) || data.musicChunkCount is number) &&
+             (!('spritesChunkCount' in data) || data.spritesChunkCount is number) &&
+             (!('backgroundChunkCount' in data) || data.backgroundChunkCount is number) &&
+             (!('isReady' in data) || data.isReady is bool) &&
+             data.createdAt is string && data.createdAt.size() <= 50;
+    }
+
+    function isValidChunk(data) {
+      return data.keys().hasAll(['index', 'type', 'data']) &&
+             data.keys().size() <= 4 &&
+             data.index is number && data.index >= 0 &&
+             data.type is string && data.type.size() <= 20 &&
+             data.data is string && data.data.size() <= 1048576;
+    }
+
+    function isValidLike(data, expectedUid, expectedDocId, docIdField) {
+      return data.keys().hasAll(['uid', docIdField, 'createdAt']) &&
+             data.uid == expectedUid &&
+             data[docIdField] == expectedDocId &&
+             data.createdAt is string && data.createdAt.size() <= 50;
+    }
+
+    function isValidPost(data) {
+      return data.keys().hasAll(['id', 'uid', 'userName', 'content', 'likesCount', 'createdAt']) &&
+             data.id is string && data.id.size() > 0 && data.id.size() <= 128 &&
+             data.uid == request.auth.uid &&
+             data.userName is string && data.userName.size() > 0 && data.userName.size() <= 50 &&
+             (!('userPhoto' in data) || (data.userPhoto is string && data.userPhoto.size() <= 2000)) &&
+             data.content is string && data.content.size() > 0 && data.content.size() <= 1000 &&
+             (!('links' in data) || (data.links is list && data.links.size() <= 5)) &&
+             data.likesCount is number && data.likesCount >= 0 &&
+             data.createdAt is string && data.createdAt.size() <= 50;
+    }
+
+    function isValidComment(data) {
+      return data.keys().hasAll(['id', 'uid', 'userName', 'content', 'createdAt']) &&
+             data.keys().size() <= 6 &&
+             data.id is string && data.id.size() > 0 && data.id.size() <= 128 &&
+             data.uid == request.auth.uid &&
+             data.userName is string && data.userName.size() > 0 && data.userName.size() <= 50 &&
+             (!('userPhoto' in data) || (data.userPhoto is string && data.userPhoto.size() <= 2000)) &&
+             data.content is string && data.content.size() > 0 && data.content.size() <= 1000 &&
+             data.createdAt is string && data.createdAt.size() <= 50;
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+
+    match /users/{uid} {
+      allow read: if true; // Public profile reads
+      allow create: if isSignedIn() && 
+                       isValidId(uid) && 
+                       uid == request.auth.uid && 
+                       isValidUserProfile(incoming());
+      allow update: if isSignedIn() && isValidId(uid) && uid == request.auth.uid && isValidUserProfile(incoming()) && (
+                         incoming().diff(existing()).affectedKeys().hasOnly(['displayName', 'photoURL'])
+                       );
+    }
+
+    match /weeks/{weekId} {
+      allow read: if true; // Available for public to list/read
+      allow create: if isSignedIn() && isValidId(weekId) && isValidWeek(incoming());
+      allow update: if isSignedIn() && isValidId(weekId) && (
+                         isAdmin() ||
+                         // Creator updating their week
+                         (existing().creatorUid == request.auth.uid && isValidWeek(incoming()) && incoming().diff(existing()).affectedKeys().hasOnly(['name', 'description', 'thumbnail', 'difficulty', 'isReady', 'chunkCount', 'musicChunkCount', 'spritesChunkCount', 'backgroundChunkCount'])) ||
+                         // User incrementing/decrementing likes/comments
+                         (incoming().diff(existing()).affectedKeys().hasOnly(['likesCount']) && math.abs(incoming().likesCount - existing().likesCount) == 1 &&
+                          // Atomic Verification:
+                          ((incoming().likesCount == existing().likesCount + 1 && existsAfter(/databases/$(database)/documents/weeks/$(weekId)/likes/$(request.auth.uid))) ||
+                           (incoming().likesCount == existing().likesCount - 1 && !existsAfter(/databases/$(database)/documents/weeks/$(weekId)/likes/$(request.auth.uid))))
+                         ) ||
+                         (incoming().diff(existing()).affectedKeys().hasOnly(['commentsCount']) && incoming().commentsCount == existing().commentsCount + 1 && existsAfter(/databases/$(database)/documents/weeks/$(weekId)/comments/$(request.auth.uid))) // Just basic protection
+                       );
+      allow delete: if isSignedIn() && isValidId(weekId) && (isAdmin() || existing().creatorUid == request.auth.uid);
+
+      match /chunks/{chunkId} {
+        allow read: if true;
+        allow create: if isSignedIn() && isValidId(weekId) && get(/databases/$(database)/documents/weeks/$(weekId)).data.creatorUid == request.auth.uid && isValidChunk(incoming());
+        allow update: if isSignedIn() && isValidId(weekId) && get(/databases/$(database)/documents/weeks/$(weekId)).data.creatorUid == request.auth.uid && isValidChunk(incoming()) && incoming().diff(existing()).affectedKeys().hasOnly(['data']);
+        allow delete: if isSignedIn() && isValidId(weekId) && get(/databases/$(database)/documents/weeks/$(weekId)).data.creatorUid == request.auth.uid;
+      }
+
+      match /likes/{userId} {
+        allow read: if true;
+        allow create: if isSignedIn() && isValidId(weekId) && isValidId(userId) && userId == request.auth.uid && isValidLike(incoming(), request.auth.uid, weekId, 'weekId');
+        allow delete: if isSignedIn() && isValidId(userId) && userId == request.auth.uid;
+      }
+
+      match /comments/{commentId} {
+        allow read: if true;
+        allow create: if isSignedIn() && isValidId(weekId) && isValidId(commentId) && isValidComment(incoming());
+        allow update: if isSignedIn() && isValidId(weekId) && isValidId(commentId) && existing().uid == request.auth.uid && isValidComment(incoming()) && incoming().diff(existing()).affectedKeys().hasOnly(['content', 'userPhoto', 'userName']);
+        allow delete: if isSignedIn() && isValidId(weekId) && isValidId(commentId) && (existing().uid == request.auth.uid || isAdmin());
+      }
+    }
+
+    match /posts/{postId} {
+      allow read: if true;
+      allow create: if isSignedIn() && isValidId(postId) && isValidPost(incoming());
+      allow update: if isSignedIn() && isValidId(postId) && (
+                         isAdmin() ||
+                         (existing().uid == request.auth.uid && isValidPost(incoming()) && incoming().diff(existing()).affectedKeys().hasOnly(['content', 'links'])) ||
+                         (incoming().diff(existing()).affectedKeys().hasOnly(['likesCount']) && math.abs(incoming().likesCount - existing().likesCount) == 1 &&
+                          ((incoming().likesCount == existing().likesCount + 1 && existsAfter(/databases/$(database)/documents/posts/$(postId)/likes/$(request.auth.uid))) ||
+                           (incoming().likesCount == existing().likesCount - 1 && !existsAfter(/databases/$(database)/documents/posts/$(postId)/likes/$(request.auth.uid))))
+                         )
+                       );
+      allow delete: if isSignedIn() && isValidId(postId) && (isAdmin() || existing().uid == request.auth.uid);
+
+      match /likes/{userId} {
+        allow read: if true;
+        allow create: if isSignedIn() && isValidId(postId) && isValidId(userId) && userId == request.auth.uid && isValidLike(incoming(), request.auth.uid, postId, 'postId');
+        allow delete: if isSignedIn() && isValidId(userId) && userId == request.auth.uid;
+      }
+    }
+
+    match /counters/{counterId} {
+      allow read: if true;
+      allow create: if isSignedIn() && isValidId(counterId) && (counterId == 'users');
+      allow update: if isSignedIn() && isValidId(counterId) && incoming().diff(existing()).affectedKeys().hasOnly(['count']) && incoming().count == existing().count + 1;
+      allow delete: if isAdmin();
+    }
+
+    match /system/test-connection {
+      allow read: if true;
+    }
+  }
+}

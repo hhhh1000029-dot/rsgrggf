@@ -1,0 +1,7 @@
+{
+  "name": ": Re: x: Nullifierverse Rhythm editor",
+  "description": "A rhythm game inspired by Friday Night Funkin\u0027. Better chart editor",
+  "requestFramePermissions": [
+    "clipboard-read"
+  ]
+}

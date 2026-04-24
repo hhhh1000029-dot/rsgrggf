@@ -1,0 +1,2 @@
+369:        const ctx = canvas.getContext('2d');
+370:        ctx?.drawImage(img, 0, 0, width, height);

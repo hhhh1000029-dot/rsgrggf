@@ -1,0 +1,148 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "Stores public information about a user/creator.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "The unique Firebase Auth UID." },
+        "displayName": { "type": "string", "description": "The user's display name." },
+        "photoURL": { "type": "string", "description": "URL to the user's profile photo." },
+        "creatorId": { "type": "integer", "description": "A unique numeric ID for the creator." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the profile was created." }
+      },
+      "required": ["uid", "displayName", "creatorId", "createdAt"]
+    },
+    "WeekData": {
+      "title": "Week Data",
+      "description": "Represents a shared rhythm game week or level.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "creatorUid": { "type": "string" },
+        "creatorName": { "type": "string" },
+        "creatorId": { "type": "integer" },
+        "description": { "type": "string" },
+        "thumbnail": { "type": "string" },
+        "songs": { "type": "array", "items": { "type": "string" } },
+        "difficulty": { "type": "integer" },
+        "likesCount": { "type": "integer" },
+        "commentsCount": { "type": "integer" },
+        "data": { "type": "string", "description": "The (possibly compressed/chunked) level data (Chart only)." },
+        "isCompressed": { "type": "boolean" },
+        "isChunked": { "type": "boolean" },
+        "chunkCount": { "type": "integer" },
+        "hasMusic": { "type": "boolean" },
+        "hasSprites": { "type": "boolean" },
+        "hasBackground": { "type": "boolean" },
+        "musicChunkCount": { "type": "integer" },
+        "spritesChunkCount": { "type": "integer" },
+        "backgroundChunkCount": { "type": "integer" },
+        "isReady": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "creatorUid", "creatorName", "creatorId", "likesCount", "commentsCount", "createdAt"]
+    },
+    "Chunk": {
+      "title": "Data Chunk",
+      "description": "A part of a large level data string.",
+      "type": "object",
+      "properties": {
+        "index": { "type": "integer" },
+        "type": { "type": "string", "enum": ["music", "sprites", "background", "full"] },
+        "data": { "type": "string" }
+      },
+      "required": ["index", "type", "data"]
+    },
+    "Like": {
+      "title": "Like",
+      "description": "Represents a like on a week or post.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "weekId": { "type": "string" },
+        "postId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "createdAt"]
+    },
+    "Post": {
+      "title": "Community Post",
+      "description": "A post shared in the community hub.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "uid": { "type": "string" },
+        "userName": { "type": "string" },
+        "userPhoto": { "type": "string" },
+        "content": { "type": "string" },
+        "links": { "type": "array", "items": { "type": "string" } },
+        "likesCount": { "type": "integer" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "uid", "userName", "likesCount", "createdAt"]
+    },
+    "Counter": {
+      "title": "Counter",
+      "description": "A generic counter for system IDs.",
+      "type": "object",
+      "properties": {
+        "count": { "type": "integer" }
+      },
+      "required": ["count"]
+    },
+    "Comment": {
+      "title": "Comment",
+      "description": "A comment on a week.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "uid": { "type": "string" },
+        "userName": { "type": "string" },
+        "userPhoto": { "type": "string" },
+        "content": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "uid", "userName", "content", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{uid}": {
+      "schema": "UserProfile",
+      "description": "User profile documents."
+    },
+    "/weeks/{weekId}": {
+      "schema": "WeekData",
+      "description": "Shared weeks/levels."
+    },
+    "/weeks/{weekId}/chunks/{chunkId}": {
+      "schema": "Chunk",
+      "description": "Chunks for large levels (Music, Sprites, Background)."
+    },
+    "/weeks/{weekId}/likes/{uid}": {
+      "schema": "Like",
+      "description": "Likes on weeks."
+    },
+    "/weeks/{weekId}/comments/{commentId}": {
+      "schema": "Comment",
+      "description": "Comments on weeks."
+    },
+    "/posts/{postId}": {
+      "schema": "Post",
+      "description": "Community posts."
+    },
+    "/posts/{postId}/likes/{uid}": {
+      "schema": "Like",
+      "description": "Likes on posts."
+    },
+    "/counters/{counterId}": {
+      "schema": "Counter",
+      "description": "System counters."
+    },
+    "/test/connection": {
+      "schema": { "type": "object", "properties": { "status": { "type": "string" } } },
+      "description": "Connection test document."
+    }
+  }
+}
